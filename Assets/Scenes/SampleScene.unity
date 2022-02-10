@@ -253,6 +253,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   circle: {fileID: 5459121235945119032, guid: b5116e8d13943884685ee391739c9fa1, type: 3}
   cross: {fileID: 8985066474428147409, guid: 1f1254bda727e29408a4330b3ef7f6bc, type: 3}
+  circleTemplate: {fileID: 7962632233981487825}
+  crossTemplate: {fileID: 5739480467192134240}
+  gameManager: {fileID: 738825495}
   allTilesLayer:
     serializedVersion: 2
     m_Bits: 192
@@ -441,7 +444,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!212 &7250484116943441941
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -509,4 +512,4 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
