@@ -7,10 +7,15 @@ public class TemplateScript : MonoBehaviour
     public GameObject circle;
     public GameObject cross;
 
+    public GameObject circleTemplate;
+    public GameObject crossTemplate;
+
+    public GameManager gameManager;
     [SerializeField]
     private LayerMask allTilesLayer;
 
     private Vector3 mousePos;
+    private GameObject turnTemplate; // cirle or cross template based on turn
 
     // Update is called once per frame
     void Update()
@@ -24,8 +29,17 @@ public class TemplateScript : MonoBehaviour
     // function to select circle or cross relative to turn
     private void CurrentTurn()
     {
-        mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        circle.transform.position = new Vector2(Mathf.Round(mousePos.x), Mathf.Round(mousePos.y));
+        if(gameManager.currentTurn == 0)
+        {
+            circleTemplate.SetActive(true);
+            crossTemplate.SetActive(false);
+            turnTemplate = circleTemplate;
+        } else
+        {
+            circleTemplate.SetActive(false);
+            crossTemplate.SetActive(true);
+            turnTemplate = crossTemplate;
+        }
     }
 
     // function to spawn circle of cross
@@ -34,16 +48,32 @@ public class TemplateScript : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             Vector2 mouseRay = Camera.main.ScreenToWorldPoint(transform.position);
-            RaycastHit2D rayHit = Physics2D.Raycast(mouseRay, Vector2.zero, Mathf.Infinity, allTilesLayer);
+            RaycastHit2D rayHit = Physics2D.Raycast(mousePos, Vector2.zero, Mathf.Infinity, allTilesLayer);
 
-            if (rayHit.collider.CompareTag("BoardTile") && (!this.gameObject.CompareTag("CircleTemplate") && !this.gameObject.CompareTag("CrossTemplate")))
+            if (rayHit.collider != null && rayHit.collider.CompareTag("BoardTile"))
             {
                 // spawn circle or cross
-                Instantiate(circle, transform.position, Quaternion.identity);
+                SpawnOnTurn();
+                rayHit.collider.GetComponent<BoxCollider2D>().enabled = !rayHit.collider.GetComponent<BoxCollider2D>().enabled;
             } else
             {
                 return;
             }
+        }
+    }
+
+    // spawn circle or cross based on turn
+    private void SpawnOnTurn()
+    {
+        if (turnTemplate.CompareTag("CircleTemplate"))
+        {
+            Instantiate(circle, transform.position, Quaternion.identity);
+            gameManager.currentTurn = 1;
+        }
+        else
+        {
+            Instantiate(cross, transform.position, Quaternion.identity);
+            gameManager.currentTurn = 0;
         }
     }
 }

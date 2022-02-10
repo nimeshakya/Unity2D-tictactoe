@@ -13,7 +13,7 @@ public class Tile : MonoBehaviour
         _renderer.color = isOffset ? offsetColor : baseColor;
     }
 
-    private void OnMouseEnter()
+    private void OnMouseOver()
     {
         _hightlight.SetActive(true);
     }

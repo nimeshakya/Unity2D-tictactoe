@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5350938473678201675}
   - component: {fileID: 4560695490177143721}
-  - component: {fileID: 7962812432392329722}
+  - component: {fileID: 6647394695404583609}
   - component: {fileID: 2663692074270060346}
   m_Layer: 7
   m_Name: Tile
@@ -85,7 +85,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!61 &7962812432392329722
+--- !u!61 &6647394695404583609
 BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -139,7 +139,7 @@ GameObject:
   - component: {fileID: 5389585808176506461}
   m_Layer: 7
   m_Name: HighLight
-  m_TagString: Untagged
+  m_TagString: BoardTile
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
