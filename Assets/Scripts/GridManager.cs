@@ -24,6 +24,7 @@ public class GridManager : MonoBehaviour
             {
                 var spawnedTile = Instantiate(_tilePrefab, new Vector3(i, j), Quaternion.identity);
                 spawnedTile.name = $"Tile {i} {j}";
+                spawnedTile.GetComponent<Tile>().tilePos = new Vector2(i, j); // store the position of the tile in tilePos var
 
                 var isOffset = (i % 2 == 0 && j % 2 != 0) || (i % 2 != 0 && j % 2 == 0);
                 spawnedTile.ColorGrid(isOffset);

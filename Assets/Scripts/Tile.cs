@@ -8,6 +8,8 @@ public class Tile : MonoBehaviour
     [SerializeField]private SpriteRenderer _renderer;
     [SerializeField]private GameObject _hightlight;
 
+    public Vector2 tilePos;
+
     public void ColorGrid(bool isOffset)
     {
         _renderer.color = isOffset ? offsetColor : baseColor;

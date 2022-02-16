@@ -65,14 +65,18 @@ public class TemplateScript : MonoBehaviour
     // spawn circle or cross based on turn
     private void SpawnOnTurn()
     {
-        if (turnTemplate.CompareTag("CircleTemplate"))
+        if (gameManager.currentTurn == 0)
         {
-            Instantiate(circle, transform.position, Quaternion.identity);
+            GameObject spawnnedCircle = Instantiate(circle, transform.position, Quaternion.identity);
+            gameManager.circlePos.Add(spawnnedCircle.transform.position);
+            gameManager.WinCheck(0);
             gameManager.currentTurn = 1;
         }
         else
         {
-            Instantiate(cross, transform.position, Quaternion.identity);
+            GameObject spawnnedCross = Instantiate(cross, transform.position, Quaternion.identity);
+            gameManager.crossPos.Add(spawnnedCross.transform.position);
+            gameManager.WinCheck(1);
             gameManager.currentTurn = 0;
         }
     }
