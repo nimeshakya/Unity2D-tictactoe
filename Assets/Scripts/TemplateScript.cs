@@ -70,6 +70,8 @@ public class TemplateScript : MonoBehaviour
             GameObject spawnnedCircle = Instantiate(circle, transform.position, Quaternion.identity);
             gameManager.circlePos.Add(spawnnedCircle.transform.position);
             gameManager.WinCheck(0);
+            if(!gameManager.win)
+                gameManager.DrawCheck();
             gameManager.currentTurn = 1;
         }
         else
@@ -77,6 +79,8 @@ public class TemplateScript : MonoBehaviour
             GameObject spawnnedCross = Instantiate(cross, transform.position, Quaternion.identity);
             gameManager.crossPos.Add(spawnnedCross.transform.position);
             gameManager.WinCheck(1);
+            if(!gameManager.win)
+                gameManager.DrawCheck();
             gameManager.currentTurn = 0;
         }
     }

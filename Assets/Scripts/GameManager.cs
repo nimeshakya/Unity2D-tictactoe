@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
@@ -10,16 +11,145 @@ public class GameManager : MonoBehaviour
     public List<Vector2> circlePos = new List<Vector2>(); // array of positions of circle
     public List<Vector2> crossPos = new List<Vector2>(); // array of positions of cross
 
-    bool win;
+    // gameobjects references
+    public Text circleScoreText;
+    public Text crossScoreText;
+    public Text winOrDrawText;
+
+    private GameObject templateCircleCross;
+    private GameObject gameOverPanel;
+    private GameObject scoreBoardPanel;
+
+    private GridManager gridManager;
+
+    [HideInInspector]
+    public bool win; // any one win
+    private bool circleWin;
+    private bool crossWin;
+
+    // scores
+    private static int circleScore = 0;
+    private static int crossScore = 0;
+
+    private void Awake()
+    {
+        templateCircleCross = GameObject.FindWithTag("TemplateCircleCross");
+        gameOverPanel = GameObject.FindWithTag("GameOverPanel");
+        gameOverPanel.SetActive(false);
+        scoreBoardPanel = GameObject.FindWithTag("ScoreBoardPanel");
+        gridManager = GameObject.FindWithTag("GridManager").GetComponent<GridManager>();
+    }
 
     private void Start()
     {
         turn = 0;
         win = false;
+        circleWin = false;
+        crossWin = false;
+
+        circleScoreText.text = circleScore.ToString();
+        crossScoreText.text = crossScore.ToString();
     }
 
-    private void Update()
+    public void PlayAgain()
     {
+        // clear all stored positions in respective list
+        circlePos.Clear();
+        crossPos.Clear();
+
+        // default all win status
+        win = false;
+        circleWin = false;
+        crossWin = false;
+        
+        // destroy all spawnned circles
+        foreach(GameObject circle in GameObject.FindGameObjectsWithTag("Circle"))
+        {
+            Destroy(circle);
+        }
+        // destroy all spawnned crosses
+        foreach(GameObject cross in GameObject.FindGameObjectsWithTag("Cross"))
+        {
+            Destroy(cross);
+        }
+        // destroy all spawnned tiles
+        foreach(GameObject tile in GameObject.FindGameObjectsWithTag("BoardTile"))
+        {
+            Destroy(tile);
+        }
+
+        gridManager.GenerateGrid();
+
+        templateCircleCross.SetActive(true);
+        scoreBoardPanel.SetActive(true);
+        gameOverPanel.SetActive(false);
+    }
+
+    public void QuitGame()
+    {
+        Application.Quit();
+    }
+
+    // check for draw
+    public void DrawCheck()
+    {
+        if(circlePos.Count >= 5 || crossPos.Count >= 5)
+        {
+            DrawAction();
+        }
+    }
+
+    // do something when draw
+    private void DrawAction()
+    {
+        templateCircleCross.SetActive(false);
+        gameOverPanel.SetActive(true);
+        scoreBoardPanel.SetActive(false);
+
+        winOrDrawText.text = "Draw";
+    }
+
+    // function to do some things when circle or cross wins
+    private void WinAction()
+    {
+        if (circleWin)
+        {
+            circleScore++;
+            winOrDrawText.text = "Circle Wins";
+            circleScoreText.text = circleScore.ToString();
+        }
+        if (crossWin)
+        {
+            crossScore++;
+            winOrDrawText.text = "Cross Wins";
+            crossScoreText.text = crossScore.ToString();
+        }
+    }
+
+    // update win status of circle or cross if win
+    private void WinUpdate(int thisTurn)
+    {
+        templateCircleCross.SetActive(false);
+        gameOverPanel.SetActive(true);
+        scoreBoardPanel.SetActive(false);
+
+        if(thisTurn == 0)
+        {
+            circleWin = true;
+            crossWin = false;
+            WinAction();
+            Debug.Log("Circle Win: " + circleScore);
+            Debug.Log("Cross Win+ " + crossScore);
+        }
+
+        if (thisTurn == 1)
+        {
+            circleWin = false;
+            crossWin = true;
+            WinAction();
+            Debug.Log("Circle Win: " + circleScore);
+            Debug.Log("Cross Win+ " + crossScore);
+        }
     }
 
     public void WinCheck(int thisTurn)
@@ -28,7 +158,7 @@ public class GameManager : MonoBehaviour
 
         for(int i=0; i<checkingList.Count; i++)
         {
-            if (!win)
+            if (!win )
             {
                 switch (checkingList[i])
                 {
@@ -188,6 +318,7 @@ public class GameManager : MonoBehaviour
                 }
             } else
             {
+                WinUpdate(thisTurn); // perform win action
                 break; // break loop
             }
         }

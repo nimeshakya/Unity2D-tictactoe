@@ -9,6 +9,11 @@ TagManager:
   - Cross
   - CircleTemplate
   - CrossTemplate
+  - GameOverPanel
+  - WinText
+  - TemplateCircleCross
+  - ScoreBoardPanel
+  - GridManager
   layers:
   - Default
   - TransparentFX
