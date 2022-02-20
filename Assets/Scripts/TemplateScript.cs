@@ -45,7 +45,10 @@ public class TemplateScript : MonoBehaviour
     // function to spawn circle of cross
     private void SpawnCircleOrCross()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (gameManager.player2 == 1 && gameManager.currentTurn == 1)
+        {
+            CPUSpawnTurn();
+        } else if (Input.GetMouseButtonDown(0))
         {
             Vector2 mouseRay = Camera.main.ScreenToWorldPoint(transform.position);
             RaycastHit2D rayHit = Physics2D.Raycast(mousePos, Vector2.zero, Mathf.Infinity, allTilesLayer);
@@ -70,8 +73,6 @@ public class TemplateScript : MonoBehaviour
             GameObject spawnnedCircle = Instantiate(circle, transform.position, Quaternion.identity);
             gameManager.circlePos.Add(spawnnedCircle.transform.position);
             gameManager.WinCheck(0);
-            if(!gameManager.win)
-                gameManager.DrawCheck();
             gameManager.currentTurn = 1;
         }
         else
@@ -79,9 +80,45 @@ public class TemplateScript : MonoBehaviour
             GameObject spawnnedCross = Instantiate(cross, transform.position, Quaternion.identity);
             gameManager.crossPos.Add(spawnnedCross.transform.position);
             gameManager.WinCheck(1);
-            if(!gameManager.win)
-                gameManager.DrawCheck();
             gameManager.currentTurn = 0;
         }
+    }
+
+    // CPU spawn
+    private void CPUSpawnTurn()
+    {
+        bool foundUniquePos = false;
+        Vector2 cpuSpawnPos;
+
+        do
+        {
+            cpuSpawnPos = gameManager.cpuPos[Random.Range(0, gameManager.cpuPos.Count)];
+
+            if (gameManager.circlePos.Contains(cpuSpawnPos) || gameManager.crossPos.Contains(cpuSpawnPos))
+            {
+                continue;
+            }
+            else
+            {
+                break;
+            }
+        } while (!foundUniquePos);
+
+        GameObject spawnnedCross = Instantiate(cross, cpuSpawnPos, Quaternion.identity);
+        gameManager.crossPos.Add(spawnnedCross.transform.position);
+
+        foreach(GameObject tile in GameObject.FindGameObjectsWithTag("BoardTile"))
+        {
+            if(tile.GetComponent<BoxCollider2D>() != null)
+            {
+                if (spawnnedCross.transform.position == tile.transform.position)
+                {
+                    tile.GetComponent<BoxCollider2D>().enabled = !tile.GetComponent<BoxCollider2D>().enabled;
+                }
+            }
+        }
+
+        gameManager.WinCheck(1);
+        gameManager.currentTurn = 0;
     }
 }

@@ -10,11 +10,6 @@ public class GridManager : MonoBehaviour
 
     Dictionary<Vector2, Tile> _tiles;
 
-    private void Start()
-    {
-        GenerateGrid();
-    }
-
     public void GenerateGrid()
     {
         _tiles = new Dictionary<Vector2, Tile>();

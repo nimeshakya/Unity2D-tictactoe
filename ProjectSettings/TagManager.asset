@@ -14,6 +14,7 @@ TagManager:
   - TemplateCircleCross
   - ScoreBoardPanel
   - GridManager
+  - MainMenuPanel
   layers:
   - Default
   - TransparentFX

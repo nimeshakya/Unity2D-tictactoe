@@ -19,6 +19,7 @@ public class GameManager : MonoBehaviour
     private GameObject templateCircleCross;
     private GameObject gameOverPanel;
     private GameObject scoreBoardPanel;
+    private GameObject mainMenuPanel;
 
     private GridManager gridManager;
 
@@ -31,12 +32,23 @@ public class GameManager : MonoBehaviour
     private static int circleScore = 0;
     private static int crossScore = 0;
 
+    // Player 2 human or cpu
+    int _player2;
+    public int player2 { get { return _player2; } private set { _player2 = value; } }
+
+    // CPU gameplay positions
+    private List<Vector2> _cpuPos = new List<Vector2> { new Vector2(0, 0), new Vector2(0, 1), new Vector2(0, 2), new Vector2(1, 0), new Vector2(1, 1), new Vector2(1, 2), new Vector2(2, 0), new Vector2(2, 1), new Vector2(2, 2), };
+    public List<Vector2> cpuPos { get { return _cpuPos; } private set { _cpuPos = value; } }
+
     private void Awake()
     {
         templateCircleCross = GameObject.FindWithTag("TemplateCircleCross");
+        templateCircleCross.SetActive(false);
         gameOverPanel = GameObject.FindWithTag("GameOverPanel");
         gameOverPanel.SetActive(false);
         scoreBoardPanel = GameObject.FindWithTag("ScoreBoardPanel");
+        scoreBoardPanel.SetActive(false);
+        mainMenuPanel = GameObject.FindWithTag("MainMenuPanel");
         gridManager = GameObject.FindWithTag("GridManager").GetComponent<GridManager>();
     }
 
@@ -51,11 +63,24 @@ public class GameManager : MonoBehaviour
         crossScoreText.text = crossScore.ToString();
     }
 
+    public void GameModeSelect(int gameMode) // gameMode is int 0 or 1
+    {
+        player2 = gameMode == 0 ? 0 : 1; // assign 0 if 1Player and 1 if 2Player
+
+        gridManager.GenerateGrid();
+        templateCircleCross.SetActive(true);
+        scoreBoardPanel.SetActive(true);
+        mainMenuPanel.SetActive(false);
+    }
+
     public void PlayAgain()
     {
         // clear all stored positions in respective list
         circlePos.Clear();
         crossPos.Clear();
+
+        // restore available positions for cpu
+        List<Vector2> cpuPos = new List<Vector2> { new Vector2(0, 0), new Vector2(0, 1), new Vector2(0, 2), new Vector2(1, 0), new Vector2(1, 1), new Vector2(1, 2), new Vector2(2, 0), new Vector2(2, 1), new Vector2(2, 2), };
 
         // default all win status
         win = false;
@@ -127,28 +152,24 @@ public class GameManager : MonoBehaviour
     }
 
     // update win status of circle or cross if win
-    private void WinUpdate(int thisTurn)
+    private void WinUpdate()
     {
         templateCircleCross.SetActive(false);
         gameOverPanel.SetActive(true);
         scoreBoardPanel.SetActive(false);
 
-        if(thisTurn == 0)
+        if(currentTurn == 0)
         {
             circleWin = true;
             crossWin = false;
             WinAction();
-            Debug.Log("Circle Win: " + circleScore);
-            Debug.Log("Cross Win+ " + crossScore);
         }
 
-        if (thisTurn == 1)
+        if (currentTurn == 1)
         {
             circleWin = false;
             crossWin = true;
             WinAction();
-            Debug.Log("Circle Win: " + circleScore);
-            Debug.Log("Cross Win+ " + crossScore);
         }
     }
 
@@ -160,6 +181,7 @@ public class GameManager : MonoBehaviour
         {
             if (!win )
             {
+                DrawCheck();
                 switch (checkingList[i])
                 {
                     case Vector2 v when v.Equals(new Vector2(0, 0)):
@@ -318,7 +340,7 @@ public class GameManager : MonoBehaviour
                 }
             } else
             {
-                WinUpdate(thisTurn); // perform win action
+                WinUpdate();// perform win action
                 break; // break loop
             }
         }
