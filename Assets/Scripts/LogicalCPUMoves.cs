@@ -48,8 +48,227 @@ public class LogicalCPUMoves : MonoBehaviour
         } while (!foundUniquePos);
 
         cpuSpawnPos = PosRelativeToCirclePos(cpuSpawnPos);
+        cpuSpawnPos = PosRelativeToItself(cpuSpawnPos);
 
         return cpuSpawnPos;
+    }
+
+    private Vector2 PosRelativeToItself(Vector2 cpuSpawnPos)
+    {
+        Vector2 relativeCPUSpawnPos = cpuSpawnPos;
+
+        foreach(Vector2 pos in gameManager.crossPos)
+        {
+            switch (pos)
+            {
+                case Vector2 v when v.Equals(new Vector2(0, 0)):
+                    if (gameManager.crossPos.Contains(new Vector2(0, 1)) || gameManager.crossPos.Contains(new Vector2(0, 2)))
+                    {
+                        if (gameManager.crossPos.Contains(new Vector2(0, 1)) && (!gameManager.circlePos.Contains(new Vector2(0, 2)) && !gameManager.crossPos.Contains(new Vector2(0,2))))
+                            relativeCPUSpawnPos = new Vector2(0, 2);
+                        if (gameManager.crossPos.Contains(new Vector2(0, 2)) && (!gameManager.circlePos.Contains(new Vector2(0, 1)) && !gameManager.crossPos.Contains(new Vector2(0, 1))))
+                            relativeCPUSpawnPos = new Vector2(0, 1);
+                    }
+                    else if (gameManager.crossPos.Contains(new Vector2(1, 0)) || gameManager.crossPos.Contains(new Vector2(2, 0)))
+                    {
+                        if (gameManager.crossPos.Contains(new Vector2(1, 0)) && (!gameManager.circlePos.Contains(new Vector2(2, 0)) && !gameManager.crossPos.Contains(new Vector2(2, 0))))
+                            relativeCPUSpawnPos = new Vector2(2, 0);
+                        if (gameManager.crossPos.Contains(new Vector2(2, 0)) && (!gameManager.circlePos.Contains(new Vector2(1, 0)) && !gameManager.crossPos.Contains(new Vector2(1, 0))))
+                            relativeCPUSpawnPos = new Vector2(1, 0);
+
+                    }
+                    else if (gameManager.crossPos.Contains(new Vector2(1, 1)) || gameManager.crossPos.Contains(new Vector2(2, 2)))
+                    {
+                        if (gameManager.crossPos.Contains(new Vector2(1, 1)) && (!gameManager.circlePos.Contains(new Vector2(2, 2)) && !gameManager.crossPos.Contains(new Vector2(2, 2))))
+                            relativeCPUSpawnPos = new Vector2(2, 2);
+                        if (gameManager.crossPos.Contains(new Vector2(2, 2)) && (!gameManager.circlePos.Contains(new Vector2(1, 1)) && !gameManager.crossPos.Contains(new Vector2(1, 1))))
+                            relativeCPUSpawnPos = new Vector2(1, 1);
+                    }
+
+                    break;
+
+                case Vector2 v when v.Equals(new Vector2(0, 1)):
+                    if (gameManager.crossPos.Contains(new Vector2(0, 0)) || gameManager.crossPos.Contains(new Vector2(0, 2)))
+                    {
+                        if (gameManager.crossPos.Contains(new Vector2(0, 0)) && (!gameManager.circlePos.Contains(new Vector2(0, 2)) && !gameManager.crossPos.Contains(new Vector2(0, 2))))
+                            relativeCPUSpawnPos = new Vector2(0, 2);
+                        if (gameManager.crossPos.Contains(new Vector2(0, 2)) && (!gameManager.circlePos.Contains(new Vector2(0, 0)) && !gameManager.crossPos.Contains(new Vector2(0, 0))))
+                            relativeCPUSpawnPos = new Vector2(0, 0);
+                    }
+                    else if (gameManager.crossPos.Contains(new Vector2(1, 1)) || gameManager.crossPos.Contains(new Vector2(2, 1)))
+                    {
+                        if (gameManager.crossPos.Contains(new Vector2(1, 1)) && (!gameManager.circlePos.Contains(new Vector2(2, 1)) && !gameManager.crossPos.Contains(new Vector2(2, 1))))
+                            relativeCPUSpawnPos = new Vector2(2, 1);
+                        if (gameManager.crossPos.Contains(new Vector2(2, 1)) && (!gameManager.circlePos.Contains(new Vector2(1, 1)) && !gameManager.crossPos.Contains(new Vector2(1, 1))))
+                            relativeCPUSpawnPos = new Vector2(1, 1);
+                    }
+
+                    break;
+
+                case Vector2 v when v.Equals(new Vector2(0, 2)):
+                    if (gameManager.crossPos.Contains(new Vector2(0, 1)) || gameManager.crossPos.Contains(new Vector2(0, 0)))
+                    {
+                        if (gameManager.crossPos.Contains(new Vector2(0, 1)) && (!gameManager.circlePos.Contains(new Vector2(0, 0)) && !gameManager.crossPos.Contains(new Vector2(0, 0))))
+                            relativeCPUSpawnPos = new Vector2(0, 0);
+                        if (gameManager.crossPos.Contains(new Vector2(0, 0)) && (!gameManager.circlePos.Contains(new Vector2(0, 1)) && !gameManager.crossPos.Contains(new Vector2(0, 1))))
+                            relativeCPUSpawnPos = new Vector2(0, 1);
+                    }
+                    else if (gameManager.crossPos.Contains(new Vector2(1, 2)) || gameManager.crossPos.Contains(new Vector2(2, 2)))
+                    {
+                        if (gameManager.crossPos.Contains(new Vector2(1, 2)) && (!gameManager.circlePos.Contains(new Vector2(2, 2)) && !gameManager.crossPos.Contains(new Vector2(2, 2))))
+                            relativeCPUSpawnPos = new Vector2(2, 2);
+                        if (gameManager.crossPos.Contains(new Vector2(2, 2)) && (!gameManager.circlePos.Contains(new Vector2(1, 2)) && !gameManager.crossPos.Contains(new Vector2(1, 2))))
+                            relativeCPUSpawnPos = new Vector2(1, 2);
+                    }
+                    else if (gameManager.crossPos.Contains(new Vector2(1, 1)) || gameManager.crossPos.Contains(new Vector2(2, 0)))
+                    {
+                        if (gameManager.crossPos.Contains(new Vector2(1, 1)) && (!gameManager.circlePos.Contains(new Vector2(2, 0)) && !gameManager.crossPos.Contains(new Vector2(2, 0))))
+                            relativeCPUSpawnPos = new Vector2(2, 0);
+                        if (gameManager.crossPos.Contains(new Vector2(2, 0)) && (!gameManager.circlePos.Contains(new Vector2(1, 1)) && !gameManager.crossPos.Contains(new Vector2(1, 1))))
+                            relativeCPUSpawnPos = new Vector2(1, 1);
+                    }
+
+                    break;
+
+                case Vector2 v when v.Equals(new Vector2(1, 0)):
+                    if (gameManager.crossPos.Contains(new Vector2(0, 0)) || gameManager.crossPos.Contains(new Vector2(2, 0)))
+                    {
+                        if (gameManager.crossPos.Contains(new Vector2(0, 0)) && (!gameManager.circlePos.Contains(new Vector2(2, 0)) && !gameManager.crossPos.Contains(new Vector2(2, 0))))
+                            relativeCPUSpawnPos = new Vector2(2, 0);
+                        if (gameManager.crossPos.Contains(new Vector2(2, 0)) && (!gameManager.circlePos.Contains(new Vector2(0, 0)) && !gameManager.crossPos.Contains(new Vector2(0, 0))))
+                            relativeCPUSpawnPos = new Vector2(0, 0);
+                    }
+                    else if (gameManager.crossPos.Contains(new Vector2(1, 1)) || gameManager.crossPos.Contains(new Vector2(1, 2)))
+                    {
+                        if (gameManager.crossPos.Contains(new Vector2(1, 1)) && (!gameManager.circlePos.Contains(new Vector2(1, 2)) && !gameManager.crossPos.Contains(new Vector2(1, 2))))
+                            relativeCPUSpawnPos = new Vector2(1, 2);
+                        if (gameManager.crossPos.Contains(new Vector2(1, 2)) && (!gameManager.circlePos.Contains(new Vector2(1, 1)) && !gameManager.crossPos.Contains(new Vector2(1, 1))))
+                            relativeCPUSpawnPos = new Vector2(1, 1);
+                    }
+
+                    break;
+
+                case Vector2 v when v.Equals(new Vector2(1, 1)):
+                    if (gameManager.crossPos.Contains(new Vector2(1, 0)) || gameManager.crossPos.Contains(new Vector2(1, 2)))
+                    {
+                        if (gameManager.crossPos.Contains(new Vector2(1, 0)) && (!gameManager.circlePos.Contains(new Vector2(1, 2)) && !gameManager.crossPos.Contains(new Vector2(1, 2))))
+                            relativeCPUSpawnPos = new Vector2(1, 2);
+                        if (gameManager.crossPos.Contains(new Vector2(1, 2)) && (!gameManager.circlePos.Contains(new Vector2(1, 0)) && !gameManager.crossPos.Contains(new Vector2(1, 0))))
+                            relativeCPUSpawnPos = new Vector2(1, 0);
+                    }
+                    else if (gameManager.crossPos.Contains(new Vector2(0, 1)) || gameManager.crossPos.Contains(new Vector2(2, 1)))
+                    {
+                        if (gameManager.crossPos.Contains(new Vector2(0, 1)) && (!gameManager.circlePos.Contains(new Vector2(2, 1)) && !gameManager.crossPos.Contains(new Vector2(2, 1))))
+                            relativeCPUSpawnPos = new Vector2(2, 1);
+                        if (gameManager.crossPos.Contains(new Vector2(2, 1)) && (!gameManager.circlePos.Contains(new Vector2(0, 1)) && !gameManager.crossPos.Contains(new Vector2(0, 1))))
+                            relativeCPUSpawnPos = new Vector2(0, 1);
+                    }
+                    else if (gameManager.crossPos.Contains(new Vector2(0, 0)) || gameManager.crossPos.Contains(new Vector2(2, 2)))
+                    {
+                        if (gameManager.crossPos.Contains(new Vector2(0, 0)) && (!gameManager.circlePos.Contains(new Vector2(2, 2)) && !gameManager.crossPos.Contains(new Vector2(2, 2))))
+                            relativeCPUSpawnPos = new Vector2(2, 2);
+                        if (gameManager.crossPos.Contains(new Vector2(2, 2)) && (!gameManager.circlePos.Contains(new Vector2(0, 0)) && !gameManager.crossPos.Contains(new Vector2(0, 0))))
+                            relativeCPUSpawnPos = new Vector2(0, 0);
+                    }
+                    else if (gameManager.crossPos.Contains(new Vector2(0, 2)) || gameManager.crossPos.Contains(new Vector2(2, 0)))
+                    {
+                        if (gameManager.crossPos.Contains(new Vector2(0, 2)) && (!gameManager.circlePos.Contains(new Vector2(2, 0)) && !gameManager.crossPos.Contains(new Vector2(2, 0))))
+                            relativeCPUSpawnPos = new Vector2(0, 2);
+                        if (gameManager.crossPos.Contains(new Vector2(2, 0)) && (!gameManager.circlePos.Contains(new Vector2(0, 2)) && !gameManager.crossPos.Contains(new Vector2(0, 2))))
+                            relativeCPUSpawnPos = new Vector2(0, 2);
+                    }
+
+                    break;
+
+                case Vector2 v when v.Equals(new Vector2(1, 2)):
+                    if (gameManager.crossPos.Contains(new Vector2(0, 2)) || gameManager.crossPos.Contains(new Vector2(2, 2)))
+                    {
+                        if (gameManager.crossPos.Contains(new Vector2(0, 2)) && (!gameManager.circlePos.Contains(new Vector2(2, 2)) && !gameManager.crossPos.Contains(new Vector2(2, 2))))
+                            relativeCPUSpawnPos = new Vector2(2, 2);
+                        if (gameManager.crossPos.Contains(new Vector2(2, 2)) && (!gameManager.circlePos.Contains(new Vector2(0, 2)) && !gameManager.crossPos.Contains(new Vector2(0, 2))))
+                            relativeCPUSpawnPos = new Vector2(0, 2);
+                    }
+                    else if (gameManager.crossPos.Contains(new Vector2(1, 1)) || gameManager.crossPos.Contains(new Vector2(1, 0)))
+                    {
+                        if (gameManager.crossPos.Contains(new Vector2(1, 1)) && (!gameManager.circlePos.Contains(new Vector2(1, 0)) && !gameManager.crossPos.Contains(new Vector2(1, 0))))
+                            relativeCPUSpawnPos = new Vector2(1, 0);
+                        if (gameManager.crossPos.Contains(new Vector2(1, 0)) && (!gameManager.circlePos.Contains(new Vector2(1, 1)) && !gameManager.crossPos.Contains(new Vector2(1, 1))))
+                            relativeCPUSpawnPos = new Vector2(1, 1);
+                    }
+
+                    break;
+
+                case Vector2 v when v.Equals(new Vector2(2, 0)):
+                    if (gameManager.crossPos.Contains(new Vector2(0, 0)) || gameManager.crossPos.Contains(new Vector2(1, 0)))
+                    {
+                        if (gameManager.crossPos.Contains(new Vector2(0, 0)) && (!gameManager.circlePos.Contains(new Vector2(1, 0)) && !gameManager.crossPos.Contains(new Vector2(1, 0))))
+                            relativeCPUSpawnPos = new Vector2(1, 0);
+                        if (gameManager.crossPos.Contains(new Vector2(1, 0)) && (!gameManager.circlePos.Contains(new Vector2(0, 0)) && !gameManager.crossPos.Contains(new Vector2(0, 0))))
+                            relativeCPUSpawnPos = new Vector2(0, 0);
+                    }
+                    else if (gameManager.crossPos.Contains(new Vector2(2, 1)) || gameManager.crossPos.Contains(new Vector2(2, 2)))
+                    {
+                        if (gameManager.crossPos.Contains(new Vector2(2, 1)) && (!gameManager.circlePos.Contains(new Vector2(2, 2)) && !gameManager.crossPos.Contains(new Vector2(2, 2))))
+                            relativeCPUSpawnPos = new Vector2(2, 2);
+                        if (gameManager.crossPos.Contains(new Vector2(2, 2)) && (!gameManager.circlePos.Contains(new Vector2(2, 1)) && !gameManager.crossPos.Contains(new Vector2(2, 1))))
+                            relativeCPUSpawnPos = new Vector2(2, 1);
+                    }
+                    else if (gameManager.crossPos.Contains(new Vector2(1, 1)) || gameManager.crossPos.Contains(new Vector2(0, 2)))
+                    {
+                        if (gameManager.crossPos.Contains(new Vector2(1, 1)) && (!gameManager.circlePos.Contains(new Vector2(0, 2)) && !gameManager.crossPos.Contains(new Vector2(0, 2))))
+                            relativeCPUSpawnPos = new Vector2(0, 2);
+                        if (gameManager.crossPos.Contains(new Vector2(0, 2)) && (!gameManager.circlePos.Contains(new Vector2(1, 1)) && !gameManager.crossPos.Contains(new Vector2(1, 1))))
+                            relativeCPUSpawnPos = new Vector2(1, 1);
+                    }
+
+                    break;
+
+                case Vector2 v when v.Equals(new Vector2(2, 1)):
+                    if (gameManager.crossPos.Contains(new Vector2(2, 0)) || gameManager.crossPos.Contains(new Vector2(2, 2)))
+                    {
+                        if (gameManager.crossPos.Contains(new Vector2(2, 0)) && (!gameManager.circlePos.Contains(new Vector2(2, 2)) && !gameManager.crossPos.Contains(new Vector2(2, 2))))
+                            relativeCPUSpawnPos = new Vector2(2, 2);
+                        if (gameManager.crossPos.Contains(new Vector2(2, 2)) && (!gameManager.circlePos.Contains(new Vector2(2, 0)) && !gameManager.crossPos.Contains(new Vector2(2, 0))))
+                            relativeCPUSpawnPos = new Vector2(2, 0);
+                    }
+                    else if (gameManager.crossPos.Contains(new Vector2(1, 1)) || gameManager.crossPos.Contains(new Vector2(0, 1)))
+                    {
+                        if (gameManager.crossPos.Contains(new Vector2(1, 1)) && (!gameManager.circlePos.Contains(new Vector2(0, 1)) && !gameManager.crossPos.Contains(new Vector2(0, 1))))
+                            relativeCPUSpawnPos = new Vector2(0, 1);
+                        if (gameManager.crossPos.Contains(new Vector2(0, 1)) && (!gameManager.circlePos.Contains(new Vector2(1, 1)) && !gameManager.crossPos.Contains(new Vector2(1, 1))))
+                            relativeCPUSpawnPos = new Vector2(1, 1);
+                    }
+
+                    break;
+
+                case Vector2 v when v.Equals(new Vector2(2, 2)):
+                    if (gameManager.crossPos.Contains(new Vector2(1, 2)) || gameManager.crossPos.Contains(new Vector2(0, 2)))
+                    {
+                        if (gameManager.crossPos.Contains(new Vector2(1, 2)) && (!gameManager.circlePos.Contains(new Vector2(0, 2)) && !gameManager.crossPos.Contains(new Vector2(0, 2))))
+                            relativeCPUSpawnPos = new Vector2(0, 2);
+                        if (gameManager.crossPos.Contains(new Vector2(0, 2)) && (!gameManager.circlePos.Contains(new Vector2(1, 2)) && !gameManager.crossPos.Contains(new Vector2(1, 2))))
+                            relativeCPUSpawnPos = new Vector2(1, 2);
+                    }
+                    else if (gameManager.crossPos.Contains(new Vector2(2, 1)) || gameManager.crossPos.Contains(new Vector2(2, 0)))
+                    {
+                        if (gameManager.crossPos.Contains(new Vector2(2, 1)) && (!gameManager.circlePos.Contains(new Vector2(2, 0)) && !gameManager.crossPos.Contains(new Vector2(2, 0))))
+                            relativeCPUSpawnPos = new Vector2(2, 0);
+                        if (gameManager.crossPos.Contains(new Vector2(2, 0)) && (!gameManager.circlePos.Contains(new Vector2(2, 1)) && !gameManager.crossPos.Contains(new Vector2(2, 1))))
+                            relativeCPUSpawnPos = new Vector2(2, 1);
+                    }
+                    else if (gameManager.crossPos.Contains(new Vector2(1, 1)) || gameManager.crossPos.Contains(new Vector2(0, 0)))
+                    {
+                        if (gameManager.crossPos.Contains(new Vector2(1, 1)) && (!gameManager.circlePos.Contains(new Vector2(0, 0)) && !gameManager.crossPos.Contains(new Vector2(0, 0))))
+                            relativeCPUSpawnPos = new Vector2(0, 0);
+                        if (gameManager.crossPos.Contains(new Vector2(0, 0)) && (!gameManager.circlePos.Contains(new Vector2(1, 1)) && !gameManager.crossPos.Contains(new Vector2(1, 1))))
+                            relativeCPUSpawnPos = new Vector2(1, 1);
+                    }
+
+                    break;
+            }
+        }
+
+        return relativeCPUSpawnPos;
     }
 
     private Vector2 PosRelativeToCirclePos(Vector2 cpuSpawnPos)
