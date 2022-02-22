@@ -86,19 +86,22 @@ public class GameManager : MonoBehaviour
         win = false;
         circleWin = false;
         crossWin = false;
-        
+
+        // change starting turn
+        currentTurn = currentTurn == 0 ? 1 : 0;
+
         // destroy all spawnned circles
-        foreach(GameObject circle in GameObject.FindGameObjectsWithTag("Circle"))
+        foreach (GameObject circle in GameObject.FindGameObjectsWithTag("Circle"))
         {
             Destroy(circle);
         }
         // destroy all spawnned crosses
-        foreach(GameObject cross in GameObject.FindGameObjectsWithTag("Cross"))
+        foreach (GameObject cross in GameObject.FindGameObjectsWithTag("Cross"))
         {
             Destroy(cross);
         }
         // destroy all spawnned tiles
-        foreach(GameObject tile in GameObject.FindGameObjectsWithTag("BoardTile"))
+        foreach (GameObject tile in GameObject.FindGameObjectsWithTag("BoardTile"))
         {
             Destroy(tile);
         }
@@ -118,16 +121,19 @@ public class GameManager : MonoBehaviour
     // check for draw
     public void DrawCheck()
     {
-        if(circlePos.Count >= 5 || crossPos.Count >= 5)
+        if (circlePos.Count >= 5 || crossPos.Count >= 5)
         {
-            DrawAction();
+            StartCoroutine(DrawAction());
         }
     }
 
     // do something when draw
-    private void DrawAction()
+    private IEnumerator DrawAction()
     {
         templateCircleCross.SetActive(false);
+
+        yield return new WaitForSeconds(0.5f);
+
         gameOverPanel.SetActive(true);
         scoreBoardPanel.SetActive(false);
 
@@ -152,13 +158,16 @@ public class GameManager : MonoBehaviour
     }
 
     // update win status of circle or cross if win
-    private void WinUpdate()
+    private IEnumerator WinUpdate()
     {
         templateCircleCross.SetActive(false);
+
+        yield return new WaitForSeconds(0.5f);
+
         gameOverPanel.SetActive(true);
         scoreBoardPanel.SetActive(false);
 
-        if(currentTurn == 0)
+        if (currentTurn == 0)
         {
             circleWin = true;
             crossWin = false;
@@ -177,23 +186,25 @@ public class GameManager : MonoBehaviour
     {
         List<Vector2> checkingList = thisTurn == 0 ? circlePos : crossPos;
 
-        for(int i=0; i<checkingList.Count; i++)
+        for (int i = 0; i < checkingList.Count; i++)
         {
-            if (!win )
+            if (!win)
             {
                 DrawCheck();
                 switch (checkingList[i])
                 {
                     case Vector2 v when v.Equals(new Vector2(0, 0)):
-                        if(checkingList.Contains(new Vector2(0, 1)) && checkingList.Contains(new Vector2(0, 2)))
+                        if (checkingList.Contains(new Vector2(0, 1)) && checkingList.Contains(new Vector2(0, 2)))
                         {
                             Debug.Log("Win");
                             win = true;
-                        } else if (checkingList.Contains(new Vector2(1, 0)) && checkingList.Contains(new Vector2(2, 0)))
+                        }
+                        else if (checkingList.Contains(new Vector2(1, 0)) && checkingList.Contains(new Vector2(2, 0)))
                         {
                             Debug.Log("Win");
                             win = true;
-                        } else if(checkingList.Contains(new Vector2(1, 1)) && checkingList.Contains(new Vector2(2, 2)))
+                        }
+                        else if (checkingList.Contains(new Vector2(1, 1)) && checkingList.Contains(new Vector2(2, 2)))
                         {
                             Debug.Log("Win");
                             win = true;
@@ -240,7 +251,7 @@ public class GameManager : MonoBehaviour
                             Debug.Log("Win");
                             win = true;
                         }
-                        else if (checkingList.Contains(new Vector2(1, 1)) && checkingList.Contains(new Vector2(1,2)))
+                        else if (checkingList.Contains(new Vector2(1, 1)) && checkingList.Contains(new Vector2(1, 2)))
                         {
                             Debug.Log("Win");
                             win = true;
@@ -338,10 +349,16 @@ public class GameManager : MonoBehaviour
 
                         break;
                 }
-            } else
+            }
+            else
             {
-                WinUpdate();// perform win action
+                StartCoroutine(WinUpdate());// perform win action
                 break; // break loop
+            }
+
+            if (!win)
+            {
+                DrawCheck();
             }
         }
     }
