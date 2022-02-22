@@ -2089,6 +2089,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4072253001781904131, guid: 850d4266ffa7fed479a11d649df85638, type: 3}
+      propertyPath: cpuMoves
+      value: 
+      objectReference: {fileID: 738825497}
+    - target: {fileID: 4072253001781904131, guid: 850d4266ffa7fed479a11d649df85638, type: 3}
       propertyPath: gameManager
       value: 
       objectReference: {fileID: 738825495}
